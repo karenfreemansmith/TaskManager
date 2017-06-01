@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void updateWordList() {
-    SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, mTaskDatabase.getTaskList(), new String[]{"task"}, new int[]{android.R.id.text1}, 0);
+    SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, mTaskDatabase.getTaskList(), new String[]{"title"}, new int[]{android.R.id.text1}, 0);
     mTaskList.setAdapter(adapter);
   }
 }
