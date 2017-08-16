@@ -1,5 +1,6 @@
 package com.microacademylabs.taskmanager;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,58 +12,31 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-  private EditText mEditTitle;
-  private EditText mEditDescription;
-  private ListView mTaskList;
-  private Button mSaveBtn;
-  private TaskDatabase mTaskDatabase;
+  private Button mTasks;
+  private Button mContacts;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    mTaskDatabase = new TaskDatabase(this);
-
-    mEditTitle = (EditText)findViewById(R.id.etTitle);
-    mEditDescription = (EditText)findViewById(R.id.etDescription);
-
-    mSaveBtn = (Button)findViewById(R.id.btnSave);
-    mSaveBtn.setOnClickListener(new View.OnClickListener() {
+    mContacts = (Button)findViewById(R.id.btnContacts);
+    mContacts.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        saveRecord();
+        Intent intent = new Intent(MainActivity.this, ContactList.class);
+        startActivity(intent);
       }
     });
 
-    mTaskList = (ListView)findViewById(R.id.taskList);
-    mTaskList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
+    mTasks = (Button)findViewById(R.id.btnTasks);
+    mTasks.setOnClickListener(new View.OnClickListener() {
       @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(MainActivity.this, mTaskDatabase.getDescription(id), Toast.LENGTH_SHORT).show();
+      public void onClick(View v) {
+        Intent intent = new Intent(MainActivity.this, TaskList.class);
+        startActivity(intent);
       }
     });
-    mTaskList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-      @Override
-      public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(MainActivity.this, "Records deleted = " + mTaskDatabase.deleteRecord(id), Toast.LENGTH_SHORT).show();
-        updateWordList();
-        return true;
-      }
-    });
-    updateWordList();
-  }
 
-  private void saveRecord() {
-    mTaskDatabase.saveRecord(mEditTitle.getText().toString(), mEditDescription.getText().toString());
-    mEditTitle.setText("");
-    mEditDescription.setText("");
-    updateWordList();
-  }
-
-  private void updateWordList() {
-    SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, mTaskDatabase.getTaskList(), new String[]{"title"}, new int[]{android.R.id.text1}, 0);
-    mTaskList.setAdapter(adapter);
   }
 }
